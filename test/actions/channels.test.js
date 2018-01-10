@@ -302,7 +302,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getUsersRoute()).
             get(`/me/teams/${TestHelper.basicTeam.id}/channels/members`).
-            reply(200, [{user_id: TestHelper.basicUser.id, channel_id: directChannel.id}, TestHelper.basicChannelMember]);
+            reply(200, [{user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: directChannel.id}, TestHelper.basicChannelMember]);
 
         await Actions.fetchMyChannelsAndMembers(TestHelper.basicTeam.id)(store.dispatch, store.getState);
 
@@ -388,7 +388,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${secondChannel.id}/members`).
-            reply(201, {user_id: TestHelper.basicUser.id, channel_id: secondChannel.id});
+            reply(201, {user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: secondChannel.id});
 
         await Actions.joinChannel(
             TestHelper.basicUser.id,
@@ -402,7 +402,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getUsersRoute()).
             get(`/me/teams/${TestHelper.basicTeam.id}/channels/members`).
-            reply(200, [{user_id: TestHelper.basicUser.id, channel_id: secondChannel.id}, TestHelper.basicChannelMember]);
+            reply(200, [{user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: secondChannel.id}, TestHelper.basicChannelMember]);
 
         await Actions.fetchMyChannelsAndMembers(TestHelper.basicTeam.id)(store.dispatch, store.getState);
 
@@ -477,7 +477,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getUsersRoute()).
             get(`/me/teams/${TestHelper.basicTeam.id}/channels/members`).
-            reply(200, [{user_id: TestHelper.basicUser.id, channel_id: userChannel.id}, TestHelper.basicChannelMember]);
+            reply(200, [{user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: userChannel.id}, TestHelper.basicChannelMember]);
 
         await Actions.fetchMyChannelsAndMembers(TestHelper.basicTeam.id)(store.dispatch, store.getState);
 
@@ -517,7 +517,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getUsersRoute()).
             get(`/me/teams/${TestHelper.basicTeam.id}/channels/members`).
-            reply(200, [{user_id: TestHelper.basicUser.id, channel_id: userChannel.id}, TestHelper.basicChannelMember]);
+            reply(200, [{user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: userChannel.id}, TestHelper.basicChannelMember]);
 
         await Actions.fetchMyChannelsAndMembers(TestHelper.basicTeam.id)(store.dispatch, store.getState);
 
@@ -557,7 +557,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getUsersRoute()).
             get(`/me/teams/${TestHelper.basicTeam.id}/channels/members`).
-            reply(200, [{user_id: TestHelper.basicUser.id, channel_id: userChannel.id, mention_count: 0, msg_count: 0}, TestHelper.basicChannelMember]);
+            reply(200, [{user_id: TestHelper.basicUser.id, roles: 'channel_user', channel_id: userChannel.id, mention_count: 0, msg_count: 0}, TestHelper.basicChannelMember]);
 
         await Actions.fetchMyChannelsAndMembers(TestHelper.basicTeam.id)(store.dispatch, store.getState);
 
@@ -1257,7 +1257,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: TestHelper.basicUser.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: TestHelper.basicUser.id});
 
         await Actions.joinChannel(
             TestHelper.basicUser.id,
@@ -1282,7 +1282,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: user.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: user.id});
 
         await Actions.addChannelMember(
             channelId,
@@ -1328,7 +1328,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: TestHelper.basicUser.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: TestHelper.basicUser.id});
 
         await Actions.joinChannel(
             TestHelper.basicUser.id,
@@ -1346,7 +1346,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: user.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: user.id});
 
         await Actions.addChannelMember(
             channelId,
@@ -1400,12 +1400,12 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getTeamsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {team_id: TestHelper.basicTeam.id, user_id: user.id});
+            reply(201, {team_id: TestHelper.basicTeam.id, roles: 'channel_user', user_id: user.id});
 
         await addUserToTeam(TestHelper.basicTeam.id, user.id)(store.dispatch, store.getState);
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: user.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: user.id});
 
         await Actions.addChannelMember(TestHelper.basicChannel.id, user.id)(store.dispatch, store.getState);
 
@@ -1492,7 +1492,7 @@ describe('Actions.Channels', () => {
 
             nock(Client4.getChannelsRoute()).
                 post(`/${TestHelper.basicChannel.id}/members`).
-                reply(201, {channel_id: TestHelper.basicChannel.id, user_id: TestHelper.basicUser.id});
+                reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: TestHelper.basicUser.id});
 
             await Actions.joinChannel(
                 TestHelper.basicUser.id,
@@ -1570,7 +1570,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${TestHelper.basicChannel.id}/members`).
-            reply(201, {channel_id: TestHelper.basicChannel.id, user_id: TestHelper.basicUser.id});
+            reply(201, {channel_id: TestHelper.basicChannel.id, roles: 'channel_user', user_id: TestHelper.basicUser.id});
 
         await Actions.joinChannel(
             TestHelper.basicUser.id,
@@ -1622,7 +1622,7 @@ describe('Actions.Channels', () => {
 
         nock(Client4.getChannelsRoute()).
             post(`/${secondChannel.id}/members`).
-            reply(201, {channel_id: secondChannel.id, user_id: TestHelper.basicUser.id});
+            reply(201, {channel_id: secondChannel.id, roles: 'channel_user', user_id: TestHelper.basicUser.id});
 
         await Actions.joinChannel(
             TestHelper.basicUser.id,
