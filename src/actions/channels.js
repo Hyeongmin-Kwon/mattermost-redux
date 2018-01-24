@@ -80,7 +80,9 @@ export function createChannel(channel, userId) {
 
         if (!myMembers[created.id]) {
             actions.push({type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER, data: member});
-            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         dispatch(batchActions([
@@ -153,7 +155,9 @@ export function createDirectChannel(userId, otherUserId) {
                 data: [{id: userId}, {id: otherUserId}]
             }
         ]), getState);
-        loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        }
 
         return {data: created};
     };
@@ -222,7 +226,9 @@ export function createGroupChannel(userIds) {
                 data: profilesInChannel
             }
         ]), getState);
-        loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        }
 
         return {data: created};
     };
@@ -396,7 +402,9 @@ export function getChannelAndMyMember(channelId) {
                 data: member
             }
         ]), getState);
-        loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        }
 
         return {data: {channel, member}};
     };
@@ -469,7 +477,7 @@ export function fetchMyChannelsAndMembers(teamId) {
                 roles.add(role);
             }
         }
-        if (roles.size > 0) {
+        if (roles.size > 0 && getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
             loadRolesIfNeeded(roles)(dispatch, getState);
         }
 
@@ -515,7 +523,7 @@ export function getMyChannelMembers(teamId) {
                 roles.add(role);
             }
         }
-        if (roles.size > 0) {
+        if (roles.size > 0 && getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
             loadRolesIfNeeded(roles)(dispatch, getState);
         }
 
@@ -642,7 +650,9 @@ export function joinChannel(userId, teamId, channelId, channelName) {
                 type: ChannelTypes.JOIN_CHANNEL_SUCCESS
             }
         ]), getState);
-        loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+        }
 
         return {data: {channel, member}};
     };
@@ -727,7 +737,9 @@ export function viewChannel(channelId, prevChannelId = '') {
                 type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER,
                 data: {...member, last_viewed_at: new Date().getTime()}
             });
-            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         const prevMember = myMembers[prevChannelId];
@@ -736,7 +748,9 @@ export function viewChannel(channelId, prevChannelId = '') {
                 type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER,
                 data: {...prevMember, last_viewed_at: new Date().getTime()}
             });
-            loadRolesIfNeeded(new Set(prevMember.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(prevMember.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         dispatch(batchActions(actions), getState);
@@ -756,7 +770,9 @@ export function markChannelAsViewed(channelId, prevChannelId = '') {
                 type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER,
                 data: {...member, last_viewed_at: Date.now()}
             });
-            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         const prevMember = myMembers[prevChannelId];
@@ -765,7 +781,9 @@ export function markChannelAsViewed(channelId, prevChannelId = '') {
                 type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER,
                 data: {...prevMember, last_viewed_at: Date.now()}
             });
-            loadRolesIfNeeded(new Set(prevMember.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(prevMember.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         if (actions.length) {
@@ -1150,7 +1168,9 @@ export function markChannelAsUnread(teamId, channelId, mentionsArray) {
                 type: ChannelTypes.RECEIVED_CHANNEL,
                 data: channel
             });
-            loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            if (getState().entities.general.serverVersion > General.LAST_OLD_PERMISSIONS_VERSION) {
+                loadRolesIfNeeded(new Set(member.roles.split(' ')))(dispatch, getState);
+            }
         }
 
         if (teamId) {
